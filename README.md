@@ -2,8 +2,8 @@
 Repository with fortran programs
 
 # Variables declaration
-I, J, K, L, M, N - Integers variables
-others letters - real variables
+- I, J, K, L, M, N - Integers variables
+- others letters - real variables
 
 # YouTube Tutorials
 
