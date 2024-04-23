@@ -18,12 +18,28 @@ dimension variable(x,...) - arrays dimension definition
 data variable/value/ - variables initialization
 
 # Program control
+## if
 ```
 if (condition) then
   code
+else if (condition) then
+  code
+else
+  code
 end if
 ```
-
+## do
+```
+do start, end, increment then
+  code
+end do
+```
+## do while
+```
+do [label] while (condition)
+  code
+end do
+```
 
 # YouTube Tutorials
 
