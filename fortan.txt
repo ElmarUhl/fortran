@@ -1,0 +1,9 @@
+FORMAT
+
+n format()
+
+Iw - inteiro w posições
+Fw.d - real w posições e d casas decimais
+nX - n espaços
+nH<string> - string n caracteres
+/ - nova linha
