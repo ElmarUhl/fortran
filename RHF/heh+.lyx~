@@ -1,0 +1,230 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\use_minted 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Cálculos SCF
+\end_layout
+
+\begin_layout Part
+Configurações iniciais
+\end_layout
+
+\begin_layout Standard
+molécula de 
+\begin_inset Formula $HeH^{+}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+O Íon hidreto de hélio, íon hidridohélio(1+) ou helônio, é um cátion estável
+ com a fórmula química 
+\begin_inset Formula $HeH^{+}$
+\end_inset
+
+.
+ É um íon com carga positiva formado pela reação de um próton com um átomo
+ de hélio na fase gasosa, observada pela primeira vez em 1925.
+ É o ácido de Brönsted mais forte conhecido, com uma afinidade de prótons
+ de 177,8 kJ / mol.
+ Este íon é também chamado hélio-ion hidreto molecular.
+ É o mais simples de íons heteronucleares, e é comparável com o íon de hidrogêni
+o molecular, H2+., mas ao contrário desse íon, entanto, tem um momento de
+ dipolo permanente, o que torna a caracterização espectroscópica mais fácil.
+ Atualmente, os pesquisadores acreditam que o universo inicial consistia
+ de apenas alguns tipos de átomos e que somente aos 100.000 anos de idade
+ o hidrogênio e o hélio se combinaram para formar a primeira molécula.
+\end_layout
+
+\begin_layout Section
+História
+\end_layout
+
+\begin_layout Standard
+Em 1925, os químicos sintetizaram HeH+ no laboratório.
+ Nos anos 1970, os teóricos previram que a molécula pode existir hoje em
+ dia, provavelmente formado de novo em nebulosas planetárias, nuvens de
+ gás ejetadas pela morte de estrelas semelhantes ao Sol.
+ Mas décadas de observações não conseguiram encontrar nenhum cátion, lançando
+ dúvidas sobre a teoria.
+ Finalmente, em 2019, o Observatório Estratosférico de Astronomia Infravermelha
+ (SOFIA) anunciou que o hidreto de hélio foi localizado a cerca de 3000
+ anos-luz da Terra, em uma nebulosa planetária chamada NGC 7027.
+\end_layout
+
+\begin_layout Section
+Propriedades
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $HeH^{+}$
+\end_inset
+
+ não pode ser preparado em uma fase condensada, pois iria protonar qualquer
+ ânion, molécula ou átomo em seu caminho, liberando, de forma irreversível,
+ um próton e um átomo de He livre.
+ Consequentemente, não se pode isolar compostos químicos contendo esse cátion,
+ apesar de ele se revelar uma espécie química muito estável quando isolado.
+ Mesmo um superácido tal qual o ácido fluoroantimônico (HSbF6) é protonado
+ pelo íon hidro-hélio.
+ No entanto, é possível estimar uma acidez hipotética aquosas usando a lei
+ de Hess:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $HeH^{+}$
+\end_inset
+
+(g) → 
+\begin_inset Formula $H^{+}$
+\end_inset
+
+(g) + He(g) +178 kJ/mol[2] HeH+(aq) → HeH+(g) +973 kJ/mol H+(g) → H+(aq)
+ – 1530 kJ/mol He(g) → He(aq) +19 kJ/mol HeH+(aq) → H+(aq) + He(aq) – 360
+ kJ/mol
+\end_layout
+
+\begin_layout Standard
+A variação de Energia de dissociação de ligação é de - 360 kJ/mol é equivalente
+ a um pKa de - 63.
+\end_layout
+
+\begin_layout Standard
+O comprimento da ligação covalente em 
+\begin_inset Formula $HeH^{+}$
+\end_inset
+
+ é 0,772 Å .
+\end_layout
+
+\begin_layout Standard
+Outros íons hidreto de hélio são conhecidos ou têm sido estudadas teoricamente.
+ 
+\begin_inset Formula $HeH_{2}{}^{+}$
+\end_inset
+
+, que tem sido observado através de espectroscopia de microondas, tem uma
+ energia calculada de ligação de 6 kcal/mol, enquanto 
+\begin_inset Formula $HeH_{3}{}^{+}$
+\end_inset
+
+ tem uma energia de ligação calculada de 0,1 kcal/mol.
+\end_layout
+
+\begin_layout Standard
+A molécula de hidreto de hélio neutra 
+\begin_inset Formula $HeH_{2}$
+\end_inset
+
+ não é estável no estado fundamental.
+ No entanto, ela existe em um estado animado como um excímero, e seu espectro
+ foi observado pela primeira vez em meados de 1980.
+ 
+\end_layout
+
+\begin_layout Standard
+He: elétrons = 2
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $H^{+}$
+\end_inset
+
+: elétrons (próton) = 0
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $HeH^{+}$
+\end_inset
+
+ elétrons = 2 (camada fechada)
+\end_layout
+
+\begin_layout Part
+Slater Type Orbitals
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $R(r)=Nr^{n-1}e^{-\zeta r}$
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
