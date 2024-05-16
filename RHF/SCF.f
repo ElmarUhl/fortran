@@ -1,4 +1,4 @@
-      PROGRAM SCF
+      PROGRAM RHF
 C*************************************************************************
 C
 C     MINIMAL BASIS STO-3G CALCULATION ON HEH+
@@ -18,7 +18,7 @@ C*************************************************************************
 
       CALL HFCALC(IOP, N, R, ZETA1, ZETA2, ZA, ZB)
 
-      END PROGRAM SCF
+      END PROGRAM RHF
      
 
 C*************************************************************************
@@ -51,8 +51,8 @@ C     CALCULATE ALL THE ONE AND TWO-ELECTRON INTEGRALS
       CALL INTGRL(IOP, N, R, ZETA1, ZETA2, ZA, ZB)
 C     BE INEFFICIENT AND PUT ALL INTEGRALS IN PRETTY ARRAYS
       CALL COLECT(IOP, N, R, ZETA1, ZETA2, ZA, ZB)
-! C     PERFORM THE SCF CALCULATION
-!       CALL SCF(IOP, N, R, ZETA, ZETA2, ZA, ZB)
+C     PERFORM THE SCF CALCULATION
+      CALL SCF(IOP, N, R, ZETA, ZETA2, ZA, ZB)
 ! C     RETURN
       END
 
@@ -327,70 +327,76 @@ C     MATRIX OF TWO-ELECTRON INTEGRALS
       CALL MATOUT(S, 2, 2, 2, 2, 4HS   )
       CALL MATOUT(X, 2, 2, 2, 2, 4HX   )
       CALL MATOUT(H, 2, 2, 2, 2, 4HH   )
-!       PRINT 10
-!    10 FORMAT(//)
-!       DO 30 I = 1,2
-!       DO 30 J = 1,2
-!       DO 30 K = 1,2
-!       DO 30 L = 1,2
-!       PRINT 20, I, J, K, L, TT(I,J,K,L)
-!    20 FORMAT(3X, 1H(, 4I2, 2H ), F10.6)
-!    30 CONTINUE
+      PRINT 10
+   10 FORMAT(//)
+      DO 30 I = 1, 2
+      DO 31 J = 1, 2
+      DO 32 K = 1, 2
+      DO 33 L = 1, 2
+      PRINT 20, I, J, K, L, TT(I, J, K, L)
+   20 FORMAT(3X, 1H(, 4I2, 2H ), F10.6)
+   33 CONTINUE
+   32 CONTINUE
+   31 CONTINUE
+   30 CONTINUE
    40 RETURN
       END
 
-! C***********************************************************************
-!       SUBROUTINE SCF(IOP,N,R,ZETA1,ZETA2,ZA,Z8)
-! C
-! C     PERFORMS THE SCF ITERATIONS
-! C
-! C***********************************************************************
-!       IMPLICIT DOUBLE PRECISION(A-H,O-Z)
-!       COMMON/MATRIX/S(2,2),X(2,2),XT(2,2),H(2,2),F(2,2),G(2,2),C(2,2),
-!      $ FPRIME(2,2),CPRIME(2,2),P(2,2),OLDP(2,2),TT(2,2,2,2),E(2,2)
-!       DATA PI/3.1416926636898D0
-! C     CONVERGENCE CRITERION FOR DENSITY MATRIX
-!       DATA CRIT/1.0D-41/
-! C     MAXIMUM NUMBER OF ITERATIONS
-!       DATA MAXIT/25/
-! C     ITERATION NUMBER
-!       ITER = 0
-! C     USE CORE-HAMILTONIAN FOR INITIAL GUESS AT F. I.E. (P-O)
-!       DO 10 I = 1, 2
-!       DO 10 J = 1, 2
-!    10 P(I,J) = 0.0D0
-!       IF (IOP .LT. 2) GO TO 20
-!       CALL MATOUT(P,2,2,2,2,4HP    )
-! C     START OF ITERATION LOOP
-!    20 ITER = ITER + 1
-!       IF (IOP .LT. 2) GO TO 40
-!       PRINT 30, ITER
-! C VVV
-!    30 FORMAT(/, 4X, 28HSTART OF ITERATION NUMBER = , I2)
-!    40 CONTINUE
-! C     FORM TUO-ELECTRON PART OF FOCR MATRIX FROM P
-!       CALL FORMG
-!       IF (IOP .LT. 2) GO TO 60
-!       CALL MATOUT(G,2,2,2,2,4HG   )
-!    50 CONTINUE
-! C     ADD CORE HAMILTONIAN TO GET FOCK MATRIX
-!       DO 60 I = 1, 2
-!       DO 60 J = 1, 2
-!       F(I,J) = H(I, J) + G(I, J)
-!    60 CONTINUE
-! C     CALCULATE ELECTRONIC ENERGY
-!       EN = 0.0D0
-!       DO 70 I = 1, 2
-!       DO 70 J = 1, 2
-!       EN = EN + 0.5D0*P(I,J)*(H(I, J) + F(I, J))
-!    70 CONTINUE
-!       IF (IOP .LT. Z) GO TO 90
-!       CALL MATOUT(F, 2, 2, 2, 2, 4HF   )
-!       PRINT 80, EN
-!    80 FORMAT(///, 4X, 20HELECTRONIC ENERGY = , D20.12)
-!    90 CONTINUE
-! C     TRANSFORM FOCK MATRIX USING G FOR TEMPORARY STORAGE
-!       CALL MULT(F,X,G,2,2)
+C***********************************************************************
+      SUBROUTINE SCF(IOP, N, R, ZETA1, ZETA2, ZA, Z8)
+C
+C     PERFORMS THE SCF ITERATIONS
+C
+C***********************************************************************
+      IMPLICIT DOUBLE PRECISION (A-H, O-Z)
+      COMMON/MATRIX/S(2,2), X(2,2), XT(2,2), H(2,2), F(2,2), G(2,2),
+     $ C(2, 2), FPRIME(2, 2), CPRIME(2, 2), P(2,2), OLDP(2,2),
+     $ TT(2,2,2,2), E(2,2)
+      DATA PI/3.1416926636898D0/
+C     CONVERGENCE CRITERION FOR DENSITY MATRIX
+      DATA CRIT/1.0D-41/
+C     MAXIMUM NUMBER OF ITERATIONS
+      DATA MAXIT/25/
+C     ITERATION NUMBER
+      ITER = 0
+C     USE CORE-HAMILTONIAN FOR INITIAL GUESS AT F. I.E. (P-O)
+      DO 11 I = 1, 2
+      DO 10 J = 1, 2
+      P(I,J) = 0.0D0
+   10 CONTINUE
+   11 CONTINUE
+      IF (IOP .LT. 2) GO TO 20
+      CALL MATOUT(P, 2, 2, 2, 2, 4HP   )
+C     START OF ITERATION LOOP
+   20 ITER = ITER + 1
+      IF (IOP .LT. 2) GO TO 40
+      PRINT 30, ITER
+   30 FORMAT(/, 4X, 28HSTART OF ITERATION NUMBER = , I2)
+   40 CONTINUE
+C     FORM TUO-ELECTRON PART OF FOCR MATRIX FROM P
+      CALL FORMG
+!      IF (IOP .LT. 2) GO TO 60
+      IF (IOP .LT. 2) GO TO 50
+      CALL MATOUT(G, 2, 2, 2, 2, 4HG   )
+   50 CONTINUE
+C     ADD CORE HAMILTONIAN TO GET FOCK MATRIX
+      DO 60 I = 1, 2
+      DO 60 J = 1, 2
+      F(I,J) = H(I,J) + G(I,J)
+   60 CONTINUE
+C     CALCULATE ELECTRONIC ENERGY
+      EN = 0.0D0
+      DO 70 I = 1, 2
+      DO 70 J = 1, 2
+      EN = EN + 0.5D0*P(I,J)*(H(I, J) + F(I,J))
+   70 CONTINUE
+      IF (IOP .LT. Z) GO TO 90
+      CALL MATOUT(F, 2, 2, 2, 2, 4HF   )
+      PRINT 80, EN
+   80 FORMAT(///, 4X, 20HELECTRONIC ENERGY = , D20.12)
+   90 CONTINUE
+C     TRANSFORM FOCK MATRIX USING G FOR TEMPORARY STORAGE
+      CALL MULT(F,X,G,2,2)
 !       CALL MULT(XT,G,FPRIME,2,2)
 ! C     DIAGONALIZE TRANSFORMED FOCK MATRIX
 !       CALL DIAG(FPRIME,CPRIME,E)
@@ -461,26 +467,31 @@ C     MATRIX OF TWO-ELECTRON INTEGRALS
 !       CALL MATOUT(OLDP,2,2,2,2,4HPS    )
 !   200 CONTINUE
 !       RETURN
-!       END
-! C***********************************************************************
-!       SUBROUTINE FORMG
-! C
-! C     CALCULATES THE G MATRIX FROM THE DENSITY MATRIX
-! C     AND TWO-ELECTRON INTEGRALS
-! C
-! C***********************************************************************
-!       IMPLICIT DOUBLE PRECISION(A-H,O-Z)
-!       COMMON/MATRIX/S(2,2),X(2,2),XT(2,2),H(2,2),F(2,2),G(2,2),C(2,2),
-!      $ FPRIME(2,2),CPRIME(2,2),P(2,2),OLDP(2,2),TT(2,2,2,2),E(2,2)
-!       DO 10 I = 1, 2
-!       DO 10 J = 1, 2
-!       G(I,J) = 0.0D0
-!       DO 10 K = 1, 2
-!       DO 10 L = 1, 2
-!       G(I,J) = G(I,J)+P(K,L)*(TT(I,J,K,L)-0.5D0*TT(I,L,K,J))
-!    10 CONTINUE
-!       RETURN
-!       END
+      END
+
+
+C***********************************************************************
+      SUBROUTINE FORMG
+C
+C     CALCULATES THE G MATRIX FROM THE DENSITY MATRIX
+C     AND TWO-ELECTRON INTEGRALS
+C
+C***********************************************************************
+      IMPLICIT DOUBLE PRECISION (A-H, O-Z)
+      COMMON/MATRIX/S(2,2), X(2,2), XT(2,2), H(2,2), F(2,2), G(2,2),
+     $ C(2,2), FPRIME(2,2), CPRIME(2,2), P(2,2), OLDP(2,2),
+     $ TT(2,2,2,2),E(2,2)
+      DO 10 I = 1, 2
+      DO 10 J = 1, 2
+      G(I,J) = 0.0D0
+      DO 10 K = 1, 2
+      DO 10 L = 1, 2
+      G(I,J) = G(I,J) + P(K,L)*(TT(I,J,K,L) - 0.5D0*TT(I,L,K,J))
+   10 CONTINUE
+      RETURN
+      END
+
+
 ! C***********************************************************************
 !       SUBROUTINE DIAG(F,C,E)
 ! C
@@ -522,21 +533,23 @@ C     MATRIX OF TWO-ELECTRON INTEGRALS
 !       C(2,1) = TEMP
 !    30 RETURN
 !       END
-! C******************************************************************
-!       SUBROUTINE MULT(A,B,C,IM,M)
-! C
-! C     MULTIPLIES TWO SQUARE MATRICES A AND B TO GET C
-! C
-! C******************************************************************
-!       IMPLICIT DOUBLE PRECISION(A-H,O-Z)
-!       DIMENSION A(IM,IM),B(IM,IM),C(IM,IM)
+
+
+C******************************************************************
+      SUBROUTINE MULT(A,B,C,IM,M)
+C
+C     MULTIPLIES TWO SQUARE MATRICES A AND B TO GET C
+C
+C******************************************************************
+      IMPLICIT DOUBLE PRECISION (A-H, O-Z)
+       DIMENSION A(IM,IM),B(IM,IM),C(IM,IM)
 !       DO 10 I = 1, M
 !       DO 10 J = L, M
 !       C(I,J) = 0.0D0
 !       DO 10 K = 1, M
 !    10 C(I,J) = C(I,J)+A(I,K)*B(K,J)
 !       RETURN
-!       END
+      END
 
 
 C******************************************************************
@@ -547,15 +560,16 @@ C
 C******************************************************************
       IMPLICIT DOUBLE PRECISION (A-H,O-Z)
       DIMENSION A(IM,IN)
-!      IHIGH = 0
-!   10 LOW = IHIGH + 1
-!      IHIGH = IHIGH + 5
-!       IHIGH = MINO(IHIGH, N)
-!      PRINT 20, LABEL,(I, I = LOW, IHIGH)
-!   20 FORMAT(///, 3X, 5H THE , A4, 6H ARRAY, /, 15X, 5(10X, I3, 6X)//)
-!      DO 30 I = 1, M
-!   30 PRINT 40, I, (A(I, J), J = LOW, IHIGH)
-!   40 FORMAT(I10, 5X, 5(1X, D18.10))
-!      IF (N-IHIGH) 50, 50, 10
-!   60 RETURN
+      IHIGH = 0
+   10 LOW = IHIGH + 1
+      IHIGH = IHIGH + 5
+      IHIGH = MIN0(IHIGH, N)
+      PRINT 20, LABEL, (I, I = LOW, IHIGH)
+   20 FORMAT(///, 3X, 5H THE , A4, 6H ARRAY, /, 15X, 5(10X, I3, 6X)//)
+      DO 30 I = 1, M
+      PRINT 40, I, (A(I, J), J = LOW, IHIGH)
+   40 FORMAT(I10, 5X, 5(1X, D18.10))
+   30 CONTINUE
+      IF (N-IHIGH) 50, 50, 10
+   50 RETURN
       END

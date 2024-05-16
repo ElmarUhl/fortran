@@ -192,5 +192,13 @@ DSQRT(x) - double precision square root.
 DEXP(x) - double precision exponential
 \end_layout
 
+\begin_layout Standard
+DERF(a) - double precision error function
+\end_layout
+
+\begin_layout Standard
+MIN0(a1, a2,...) - choosing smallest integer value
+\end_layout
+
 \end_body
 \end_document

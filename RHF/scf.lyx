@@ -93,6 +93,14 @@ Sequence of Execution
 \end_layout
 
 \begin_layout Part
+Subroutine HFCALC
+\end_layout
+
+\begin_layout Standard
+xxxx
+\end_layout
+
+\begin_layout Section
 Subrotina INTGRL
 \end_layout
 
@@ -180,6 +188,78 @@ Está sendo varida a 3a.
  linha.
 \end_layout
 
+\begin_layout Subsection
+Subroutine S
+\end_layout
+
+\begin_layout Standard
+xxx
+\end_layout
+
+\begin_layout Subsection
+Subroutine T
+\end_layout
+
+\begin_layout Standard
+xxxx
+\end_layout
+
+\begin_layout Subsection
+Subroutine V
+\end_layout
+
+\begin_layout Standard
+xxxx
+\end_layout
+
+\begin_layout Subsubsection
+Subroutine FO
+\end_layout
+
+\begin_layout Standard
+xxxx
+\end_layout
+
+\begin_layout Subsection
+Subroutine TWOE
+\end_layout
+
+\begin_layout Standard
+xxx
+\end_layout
+
+\begin_layout Section
+Subroutine COLECT
+\end_layout
+
+\begin_layout Standard
+xxx
+\end_layout
+
+\begin_layout Subsection
+Subroutine MATOUT
+\end_layout
+
+\begin_layout Section
+Subroutine SCF
+\end_layout
+
+\begin_layout Standard
+xxxx
+\end_layout
+
+\begin_layout Subsection
+Subroutine MATOUT
+\end_layout
+
+\begin_layout Standard
+xxx
+\end_layout
+
+\begin_layout Subsection
+Subroutine FORMG
+\end_layout
+
 \begin_layout Part
 Fortran Intrinsic Functions
 \end_layout
@@ -194,6 +274,10 @@ DEXP(x) - double precision exponential
 
 \begin_layout Standard
 DERF(a) - double precision error function
+\end_layout
+
+\begin_layout Standard
+MIN0(a1, a2,...) - choosing smallest integer value
 \end_layout
 
 \end_body
