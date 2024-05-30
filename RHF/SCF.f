@@ -53,7 +53,7 @@ C     BE INEFFICIENT AND PUT ALL INTEGRALS IN PRETTY ARRAYS
       CALL COLECT(IOP, N, R, ZETA1, ZETA2, ZA, ZB)
 C     PERFORM THE SCF CALCULATION
       CALL SCF(IOP, N, R, ZETA, ZETA2, ZA, ZB)
-! C     RETURN
+      RETURN
       END
 
 C***************************************************************************
@@ -189,31 +189,31 @@ C     ASYMPTOTIC VALUE FOR SMALL ARGUMENTS
       END
 
 
-! C********************************************************************
-!       FUNCTION DERF(ARG)
-! C
-! C     CALCULATES THE ERROR FUNCTION ACCORDING TO A RATIONAL
-! C     APPROXIMATION FROM M. ABRAMOWITZ AND I.A. STEGUN,
-! C     HANDBOOK OF MATHEMATICAL FUNCTIONS. DOVER.
-! C     ABSOLUTE ERROR IS LESS THAN 1.5.10..(-7)
-! C     CAN BE REPLACED BY A BUILT-IN FUNCTION ON SOME MACHINES
-! C
-! C*********************************************************************
-!       IMPLICIT DOUBLE PRECISION(A-H, O-Z)
-!       DIMENSION A(5)
-!       DATA P/0.3275911D0/
-!       DATA A/0.254829592D0,-0.284496736D0,1.421413741D0,
-!      $ -1.463162027D0,1.061405429D0/
-!       T = 1.0D0/(1.0D0+P*ARG)
-!       TN = T
-!       POLY = A(1)*TN
-!       DO 10 I = 2, 5
-!       TN = TN*T
-!       POLY = POLY+A(I)*TN
-!    10 CONTINUE
-!       DERF = 1.0D0-POLY*DEXP(-ARG*ARG)
-!       RETURN
-!       END
+C********************************************************************
+      FUNCTION DERF(ARG)
+C
+C     CALCULATES THE ERROR FUNCTION ACCORDING TO A RATIONAL
+C     APPROXIMATION FROM M. ABRAMOWITZ AND I.A. STEGUN,
+C     HANDBOOK OF MATHEMATICAL FUNCTIONS. DOVER.
+C     ABSOLUTE ERROR IS LESS THAN 1.5.10..(-7)
+C     CAN BE REPLACED BY A BUILT-IN FUNCTION ON SOME MACHINES
+C
+C*********************************************************************
+      IMPLICIT DOUBLE PRECISION (A-H, O-Z)
+      DIMENSION A(5)
+      DATA P/0.3275911D0/
+      DATA A/0.254829592D0,-0.284496736D0,1.421413741D0,
+     $ -1.463162027D0,1.061405429D0/
+      T = 1.0D0/(1.0D0+P*ARG)
+      TN = T
+      POLY = A(1)*TN
+      DO 10 I = 2, 5
+      TN = TN*T
+      POLY = POLY + A(I)*TN
+   10 CONTINUE
+      DERF = 1.0D0-POLY*DEXP(-ARG*ARG)
+      RETURN
+      END
 
 
 C**********************************************************************
@@ -350,7 +350,7 @@ C
 C***********************************************************************
       IMPLICIT DOUBLE PRECISION (A-H, O-Z)
       COMMON/MATRIX/S(2,2), X(2,2), XT(2,2), H(2,2), F(2,2), G(2,2),
-     $ C(2, 2), FPRIME(2, 2), CPRIME(2, 2), P(2,2), OLDP(2,2),
+     $ C(2,2), FPRIME(2,2), CPRIME(2,2), P(2,2), OLDP(2,2),
      $ TT(2,2,2,2), E(2,2)
       DATA PI/3.1416926636898D0/
 C     CONVERGENCE CRITERION FOR DENSITY MATRIX
@@ -397,76 +397,76 @@ C     CALCULATE ELECTRONIC ENERGY
    90 CONTINUE
 C     TRANSFORM FOCK MATRIX USING G FOR TEMPORARY STORAGE
       CALL MULT(F,X,G,2,2)
-!       CALL MULT(XT,G,FPRIME,2,2)
-! C     DIAGONALIZE TRANSFORMED FOCK MATRIX
-!       CALL DIAG(FPRIME,CPRIME,E)
-! C     TRANSFORM EIGENVECTORS TO GET MATRIX C
-!       CALL MULT(X,CPRIME,C,2,2)
-! C     FORM NEW DENSITY MATRIX
-!       DO 100 I = 1, 2
-!       DO 100 J = 1, 2
-! C     SAVE PRESENT DENSITY MATRIX
-! C     BEFORE CREATING NEW ONE
-!       OLDP(I,J) = P(I,J)
-!       P(I,J) = 0.0D0
-!       DO 100 K = 1, 1
-!       P(I,J) = P(I,J) + 2.0D0*C(I,K)*C(J,K)
-!   100 CONTINUE
-!       IF (IOP .LT. 2) GO TO 110
-!       CALL MATOUT(FPRIME,2,2,2,2,4HF'  )
-!       CALL MATOUT(CPRIME,2,2,2,2,4HC'    )
-!       CALL MATOUT(E,2,2,2,2,4HE   )
-!       CALL MATOUT(C,2,2,2,2,4HC   )
-!       CALL MATOUT(P,2,2,2,2,4HP   )
-!   110 CONTINUE
-! C     CALCULATE DELTA
-!       DELTA = 0.0D0
-!       DO 120 I = 1, 2
-!       DO 120 J = 1, 2
-!       DELTA = DELTA + (P(I,J) - OLDP(I,J))**2
-!   120 CONTINUE
-!       DELTA = DSQRT(DELTA/4.0D0)
-!       IF (IOP .EQ. 0) GO TO 140
-!       PRINT 130, DELTA
-!   130 FORMAT(/,4X,39HDELTA(CONVERGENCE OF DENSITY MATRIX) =
-!      $ F10.6,/)
-!   140 CONTINUE
-! C     CHECK FOR CONVERGENCE
-!       IF (DELTA .LT. CRIT) GO TO 180
-! C     NOT YET CONVERGED
-! C     TEST FOR MAXIMUM NUMBER OF ITERATIONS
-! C     IF MAXIMUM NUMBER NOT YET REACHED THEN
-! C     GO BACK FOR ANOTHER ITERATION
-!       IF (ITER .LT. MAXIT) GO TO 20
-! C     SOMETHING WRONG HERE
-!       PRINT 150
-!   150 FORMAT(4X,21HNO CONVERGENCE IN SCF)
-!       STOP
-!   180 CONTINUE
-! C     CALCULATION CONVERGED IF IT GOT HERE
-! C     ADD NUCLEAR REPULSION TO GET TOTAL ENERGY
-!       ENT = EN+ZA*ZB/R
-!       IF (IOP .EQ. 0) GO TO 180
-!       PRINT 170, EN, ENT
-!   170 FORMAT(//,4X,21HCALCULATION CONVERGED,//,
-!      $ 4X,20HELECTRONIC ENERGY = ,D20.12,//,
-!      $ 4X,20HTOTAL ENERGY = ,D20.12)
-!   180 CONTINUE
-!       IF (IOP .NE. 1) GO TO 190
-! C     PRINT OUT THE FINAL RESULTS IF
-! C     HAVE NOT DONE SO ALREADY
-!       CALL MATOUT(G,2,2,2,2,4HG     )
-!       CALL MATOUT(F,2,2,2,2,4HF     )
-!       CALL MATOUT(E,2,2,2,2,4HE     )
-!       CALL MATOUT(C,2,2,2,2,4HC     )
-!       CALL MATOUT(P,2,2,2,2,4HP     )
-!   190 CONTINUE
-! C     PS MATRIX HAS MULLIKEN POPULATIONS
-!       CALL MULT(P,S,OLDP,2,2)
-!       IF (IOP .EQ. 0) GO TO 200
-!       CALL MATOUT(OLDP,2,2,2,2,4HPS    )
-!   200 CONTINUE
-!       RETURN
+      CALL MULT(XT,G,FPRIME,2,2)
+C     DIAGONALIZE TRANSFORMED FOCK MATRIX
+      CALL DIAG(FPRIME,CPRIME,E)
+C     TRANSFORM EIGENVECTORS TO GET MATRIX C
+      CALL MULT(X,CPRIME,C,2,2)
+C     FORM NEW DENSITY MATRIX
+      DO 100 I = 1, 2
+      DO 100 J = 1, 2
+C     SAVE PRESENT DENSITY MATRIX
+C     BEFORE CREATING NEW ONE
+      OLDP(I,J) = P(I,J)
+      P(I,J) = 0.0D0
+      DO 100 K = 1, 1
+      P(I,J) = P(I,J) + 2.0D0*C(I,K)*C(J,K)
+  100 CONTINUE
+      IF (IOP .LT. 2) GO TO 110
+      CALL MATOUT(FPRIME,2,2,2,2,4HF'  )
+      CALL MATOUT(CPRIME,2,2,2,2,4HC'    )
+      CALL MATOUT(E,2,2,2,2,4HE   )
+      CALL MATOUT(C,2,2,2,2,4HC   )
+      CALL MATOUT(P,2,2,2,2,4HP   )
+  110 CONTINUE
+C     CALCULATE DELTA
+      DELTA = 0.0D0
+      DO 120 I = 1, 2
+      DO 120 J = 1, 2
+      DELTA = DELTA + (P(I,J) - OLDP(I,J))**2
+  120 CONTINUE
+      DELTA = DSQRT(DELTA/4.0D0)
+      IF (IOP .EQ. 0) GO TO 140
+      PRINT 130, DELTA
+  130 FORMAT(/,4X,39HDELTA(CONVERGENCE OF DENSITY MATRIX) =
+     $ F10.6,/)
+  140 CONTINUE
+C     CHECK FOR CONVERGENCE
+      IF (DELTA .LT. CRIT) GO TO 160
+C     NOT YET CONVERGED
+C     TEST FOR MAXIMUM NUMBER OF ITERATIONS
+C     IF MAXIMUM NUMBER NOT YET REACHED THEN
+C     GO BACK FOR ANOTHER ITERATION
+      IF (ITER .LT. MAXIT) GO TO 20
+C     SOMETHING WRONG HERE
+      PRINT 150
+  150 FORMAT(4X,21HNO CONVERGENCE IN SCF)
+      STOP
+  160 CONTINUE
+C     CALCULATION CONVERGED IF IT GOT HERE
+C     ADD NUCLEAR REPULSION TO GET TOTAL ENERGY
+      ENT = EN + ZA*ZB/R
+      IF (IOP .EQ. 0) GO TO 180
+      PRINT 170, EN, ENT
+  170 FORMAT(//,4X,21HCALCULATION CONVERGED,
+     $ //,4X,20HELECTRONIC ENERGY = ,D20.12,
+     $ //,4X,20HTOTAL ENERGY =     ,D20.12)
+  180 CONTINUE
+      IF (IOP .NE. 1) GO TO 190
+C     PRINT OUT THE FINAL RESULTS IF
+C     HAVE NOT DONE SO ALREADY
+      CALL MATOUT(G,2,2,2,2,4HG     )
+      CALL MATOUT(F,2,2,2,2,4HF     )
+      CALL MATOUT(E,2,2,2,2,4HE     )
+      CALL MATOUT(C,2,2,2,2,4HC     )
+      CALL MATOUT(P,2,2,2,2,4HP     )
+  190 CONTINUE
+C     PS MATRIX HAS MULLIKEN POPULATIONS
+      CALL MULT(P,S,OLDP,2,2)
+      IF (IOP .EQ. 0) GO TO 200
+      CALL MATOUT(OLDP,2,2,2,2,4HPS    )
+  200 CONTINUE
+      RETURN
       END
 
 
@@ -492,47 +492,47 @@ C***********************************************************************
       END
 
 
-! C***********************************************************************
-!       SUBROUTINE DIAG(F,C,E)
-! C
-! C     DIAGONALIZES F TO GIVE EIGENVECTORS IN C AND EIGENVALUES IN E
-! C     THETA IS THE ANGLE DESCRIBING SOLUTION
-! C
-! C***********************************************************************
-!       IMPLICIT DOUBLE PRECISION(A-H,O-Z)
-!       DIMENSION F(2,2),C(2,2),E(2,2)
-!       DATA PI/3.1416928636898D0/
-!       IF (DABS(F(1,1)-F(2,2)) .GT. 1.0D-20) GO TO 10
-! C     HERE IS SYMMETRY DETERMINED SOLUTION (HOMONUCLEAR DIATOMIC)
-!       THETA = PI/4.0D0
-!       GO TO 20
-!    10 CONTINUE
-! C     SOLUTION FOR HETERONUCLEAR DIATOMIC
-!       THETA = 0.6D0*DATAN(2.0D0*F(1,2)/(F(1,1)-F(2,2)))
-!    20 CONTINUE
-!       C(1,1) = DCOS(THETA)
-!       C(2,1) = DSIN(THETA)
-!       C(1,2) = DSIN(THETA)
-!       C(2,2) = -DCOS(THETA)
-!       E(1,1) = F(1,1)*DCOS(THETA)**2+F(2,2)*DSIN(THETA)**2
-!      $ +F(1,2)*DSIN(2.0D0*THETA)
-!       E(2,2) = F(2,2)*DCOS(THETA)**2+F(1,1)*DSIN(THETA)*2
-!      $ -F(1,2)*DSIN(2.0D0*THETA)
-!       E(2,1) = 0.0D0
-!       E(1,2) = 0.0D0
-! C     ORDER EIGENVALUES AND EIGENVECTORS
-!       IF (E(2,2) .GT. E(1,1)) GO TO 30
-!       TEMP = E(2,2)
-!       E(2,2) = E(1,1)
-!       E(1,1) = TEMP
-!       TEMP = C(1,2)
-!       C(1,2) = C(1,1)
-!       C(1,1) = TEMP
-!       TEMP = C(2,2)
-!       C(2,2) = C(2,1)
-!       C(2,1) = TEMP
-!    30 RETURN
-!       END
+C***********************************************************************
+      SUBROUTINE DIAG(F, C, E)
+C
+C     DIAGONALIZES F TO GIVE EIGENVECTORS IN C AND EIGENVALUES IN E
+C     THETA IS THE ANGLE DESCRIBING SOLUTION
+C
+C***********************************************************************
+      IMPLICIT DOUBLE PRECISION(A-H,O-Z)
+      DIMENSION F(2,2),C(2,2),E(2,2)
+      DATA PI/3.1416928636898D0/
+      IF (DABS(F(1,1)-F(2,2)) .GT. 1.0D-20) GO TO 10
+C     HERE IS SYMMETRY DETERMINED SOLUTION (HOMONUCLEAR DIATOMIC)
+      THETA = PI/4.0D0
+      GO TO 20
+   10 CONTINUE
+C     SOLUTION FOR HETERONUCLEAR DIATOMIC
+      THETA = 0.6D0*DATAN(2.0D0*F(1,2)/(F(1,1) - F(2,2)))
+   20 CONTINUE
+      C(1,1) = DCOS(THETA)
+      C(2,1) = DSIN(THETA)
+      C(1,2) = DSIN(THETA)
+      C(2,2) = -DCOS(THETA)
+      E(1,1) = F(1,1)*DCOS(THETA)**2 + F(2,2)*DSIN(THETA)**2
+     $ + F(1,2)*DSIN(2.0D0*THETA)
+      E(2,2) = F(2,2)*DCOS(THETA)**2 + F(1,1)*DSIN(THETA)*2
+     $ -F(1,2)*DSIN(2.0D0*THETA)
+      E(2,1) = 0.0D0
+      E(1,2) = 0.0D0
+C     ORDER EIGENVALUES AND EIGENVECTORS
+      IF (E(2,2) .GT. E(1,1)) GO TO 30
+      TEMP = E(2,2)
+      E(2,2) = E(1,1)
+      E(1,1) = TEMP
+      TEMP = C(1,2)
+      C(1,2) = C(1,1)
+      C(1,1) = TEMP
+      TEMP = C(2,2)
+      C(2,2) = C(2,1)
+      C(2,1) = TEMP
+   30 RETURN
+      END
 
 
 C******************************************************************
@@ -542,13 +542,13 @@ C     MULTIPLIES TWO SQUARE MATRICES A AND B TO GET C
 C
 C******************************************************************
       IMPLICIT DOUBLE PRECISION (A-H, O-Z)
-       DIMENSION A(IM,IM),B(IM,IM),C(IM,IM)
-!       DO 10 I = 1, M
-!       DO 10 J = L, M
-!       C(I,J) = 0.0D0
-!       DO 10 K = 1, M
-!    10 C(I,J) = C(I,J)+A(I,K)*B(K,J)
-!       RETURN
+      DIMENSION A(IM,IM),B(IM,IM),C(IM,IM)
+      DO 10 I = 1, M
+      DO 10 J = L, M
+      C(I,J) = 0.0D0
+      DO 10 K = 1, M
+   10 C(I,J) = C(I,J) + A(I,K)*B(K,J)
+      RETURN
       END
 
 
